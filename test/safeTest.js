@@ -35,8 +35,8 @@ Step.safe(
     console.log('four');
     return "ok";
   }
-).handle(function(err) {
-  console.log("handle():");
+).handle(function(err, index) {
+  console.log("Error on function " + index + "!");
   console.dir({err:err});
   //throw err;
 })
