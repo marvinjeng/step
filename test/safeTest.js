@@ -11,20 +11,29 @@ function something_flaky(callback) {
   });
 }
 
+function something_stable(callback) {
+  setTimeout(function() {
+    callback(null, "awesome");
+  })
+}
+
 Step.safe(
   function () {
     console.log('one');
-    this()
+    this();
   },
-  function (err) {
-    something_flaky(this);
+  function () {
+    something_stable(this);
     console.log('two');
   },
-  function (err) {
+  function (data) {
+    console.log("data is: " + data);
+    something_flaky(this);
     console.log('three');
   },
-  function (err) {
+  function () {
     console.log('four');
+    return "ok";
   }
 ).handle(function(err) {
   console.log("handle():");
