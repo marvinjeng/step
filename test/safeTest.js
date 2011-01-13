@@ -11,32 +11,34 @@ function something_flaky(callback) {
   });
 }
 
-function something_stable(callback) {
+function something_stable(callback, val) {
   setTimeout(function() {
-    callback(null, "awesome");
+    callback(null, val + ' stabilized ');
   })
 }
 
 Step.safe(
-  function () {
-    console.log('one');
-    this();
+  function is_admin() {
+    console.log('one')
+    this()
   },
-  function () {
-    something_stable(this);
-    console.log('two');
+  function is_owner() {
+    console.log('two')
+    return 'three'
   },
-  function (data) {
-    console.log("data is: " + data);
-    something_flaky(this);
-    console.log('three');
+  function has_access(n) {
+    something_stable(this, n)  
   },
-  function () {
-    console.log('four');
-    return "ok";
+  function has_session(m) {
+    console.log(m)
+    this.result(m + ' four')
+  },
+  function result() {
+  
   }
-).handle(function(err, index) {
-  console.log("Error on function " + index + "!");
-  console.dir({err:err});
-  //throw err;
+).result(function(result) {
+  console.log('result: ' + result)
+}).error(function(err, index) {
+  console.log('error at function ' + index + ':')
+  console.dir(err)
 })
