@@ -24,17 +24,17 @@ Step.safe(
   },
   function is_owner() {
     console.log('two')
-    return 'three'
+    this(null, 'three')
   },
   function has_access(n) {
     something_stable(this, n)  
   },
   function has_session(m) {
     console.log(m)
-    this.result(m + ' four')
+    return (m + ' four')
   },
   function result() {
-  
+    console.log("Should never get here")
   }
 ).result(function(result) {
   console.log('result: ' + result)
