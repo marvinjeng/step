@@ -62,7 +62,7 @@ Step.block(
   function b() {
     test(this)
   },
-  function complete(msg) {
+  function complete(err, msg) {
     console.log("complete, msg: " + msg)
   }
 )
