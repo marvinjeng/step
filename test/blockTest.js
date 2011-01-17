@@ -17,6 +17,9 @@ function something_stable(callback, val) {
   })
 }
 
+Step.block(function first() {
+
+var next = this
 Step.block(
   function start() {
     console.log("Starting Step.block...")
@@ -41,10 +44,31 @@ Step.block(
     console.log("Should never get here")
   },
   function complete(err, val) {
-    if (!err && val) {
+    if (!err) {
       console.log('returned: ' + val)
     }
     else {
       console.warn(err.stack || err)
     }
+    next()
   })
+}, function second() {
+
+Step.block(
+  function a() {
+    console.log("a")
+    this()
+  },
+  function b() {
+    test(this)
+  },
+  function complete(msg) {
+    console.log("complete, msg: " + msg)
+  }
+)
+
+})
+
+function test(cb) {
+  cb(null, "okay")
+}
